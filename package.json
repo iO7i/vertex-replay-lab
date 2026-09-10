@@ -1,0 +1,15 @@
+{
+  "name": "vertex-replay-lab",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Provider-neutral canonical event and replay lab for duplicate-safe, tenant-bound business effects.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "demo": "node demo.mjs",
+    "test": "node --test"
+  },
+  "license": "MIT"
+}
