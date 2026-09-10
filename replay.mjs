@@ -47,6 +47,42 @@ export class ReplayLab {
     return { status: "applied", eventKey: record.eventKey, mutationKey: record.mutationKey };
   }
 
+  applyWithLostAcknowledgement(event) {
+    const result = this.deliver(event);
+    if (result.status !== "applied") return result;
+    return {
+      status: "completion_unknown",
+      effectCommitted: true,
+      eventKey: result.eventKey,
+      mutationKey: result.mutationKey,
+    };
+  }
+
+  reconcile(event) {
+    const result = this.deliver(event);
+    if (result.status === "duplicate") return { status: "reconciled", eventKey: result.eventKey };
+    return result;
+  }
+
+  exportState() {
+    return {
+      receipts: [...this.receipts.entries()].sort(([a], [b]) => a.localeCompare(b)),
+      effects: [...this.effects.entries()].sort(([a], [b]) => a.localeCompare(b)),
+      rejections: this.rejections,
+    };
+  }
+
+  static fromState(state) {
+    if (!state || !Array.isArray(state.receipts) || !Array.isArray(state.effects) || !Array.isArray(state.rejections)) {
+      throw new Error("invalid replay state");
+    }
+    const lab = new ReplayLab();
+    lab.receipts = new Map(state.receipts);
+    lab.effects = new Map(state.effects);
+    lab.rejections = structuredClone(state.rejections);
+    return lab;
+  }
+
   summary() {
     const effectLedger = [...this.effects.entries()].sort(([a], [b]) => a.localeCompare(b));
     const receipts = [...this.receipts.entries()].sort(([a], [b]) => a.localeCompare(b));
