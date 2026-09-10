@@ -13,11 +13,13 @@ External providers retry, duplicate, reorder, and sometimes mutate deliveries. A
 
 ## Demo
 
+Requires Node.js 22 or 24. Both are supported LTS lines; Node.js 20 is not a supported runtime for this lab.
+
 ```bash
 npm run demo
 ```
 
-The demo uses only synthetic `merchant-a` and `merchant-b` payloads from two deliberately different provider formats. It prints the applied effect count, duplicate/conflict/tenant rejections, and two independently computed replay digests.
+The demo uses only synthetic `merchant-a` and `merchant-b` payloads from two deliberately different provider formats. It prints the applied effect count, duplicate/conflict/tenant rejections, acknowledgement-loss reconciliation, restart recovery, fail-closed input handling, and two independently computed replay digests.
 
 ## Proof
 
@@ -25,7 +27,18 @@ The demo uses only synthetic `merchant-a` and `merchant-b` payloads from two del
 npm test
 ```
 
-The tests cover canonicalization, duplicate delivery, conflicting payload reuse, tenant isolation, and deterministic replay. The same workload is run twice; the replay digest must match.
+The tests cover canonicalization, irrelevant key ordering, duplicate delivery, conflicting payload reuse, tenant isolation, acknowledgement-loss reconciliation, restart recovery, malformed/unsupported input rejection, deterministic replay, and a deterministic property-style duplicate schedule. The same workload is run twice; the replay digest must match.
+
+## Setup
+
+This is a dependency-free Node.js reference lab. After cloning it, run the documented proof commands directly:
+
+```bash
+npm test
+npm run demo
+```
+
+GitHub Actions runs both Node.js 22 and Node.js 24 for every push and pull request.
 
 ## Scope
 

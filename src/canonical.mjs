@@ -40,6 +40,9 @@ export function canonicalize(event) {
   const provider = requireString(event.provider, "provider");
   const raw = event.payload;
   if (!raw || typeof raw !== "object") throw new Error("invalid payload");
+  if (raw.schema_version !== undefined && raw.schema_version !== "1") {
+    throw new Error("unsupported event schema version");
+  }
 
   let providerEventId;
   let tenantId;
