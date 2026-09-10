@@ -13,7 +13,7 @@ External providers retry, duplicate, reorder, and sometimes mutate deliveries. A
 
 ## Demo
 
-Requires Node.js 22 or 24. Both are supported LTS lines; Node.js 20 is not a supported runtime for this lab.
+Requires Node.js 22 or 24. These are the supported LTS runtime lines for this lab; other major versions are outside the compatibility contract.
 
 ```bash
 npm run demo

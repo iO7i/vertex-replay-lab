@@ -5,7 +5,7 @@
   "description": "Provider-neutral canonical event and replay lab for duplicate-safe, tenant-bound business effects.",
   "type": "module",
   "engines": {
-    "node": ">=22"
+    "node": "^22.0.0 || ^24.0.0"
   },
   "scripts": {
     "demo": "node demo.mjs",
