@@ -4,7 +4,10 @@ import { run } from "./replay.mjs";
 const events = JSON.parse(await readFile(new URL("./fixtures/events.json", import.meta.url)));
 const first = run(events);
 const second = run(events);
-const counts = Object.groupBy(first.results, (result) => result.status);
+const counts = first.results.reduce((groups, result) => {
+  (groups[result.status] ??= []).push(result);
+  return groups;
+}, {});
 
 console.log("VERTEX REPLAY LAB / SYNTHETIC WORKLOAD");
 console.log(`Received events:              ${events.length}`);
